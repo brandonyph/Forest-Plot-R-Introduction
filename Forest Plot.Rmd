@@ -28,7 +28,7 @@ library(forestplot)
 library(dplyr)
 ```
 
-# 
+# Making the data table
 ```{r}
 # Cochrane data from the 'rmeta'-package
 cochrane_from_rmeta <- structure(list(mean  = c(NA, NA, 0.578, 0.165, 0.246, 0.700, 0.348, 0.139, 1.017, NA, 0.531), 
@@ -40,7 +40,7 @@ cochrane_from_rmeta <- structure(list(mean  = c(NA, NA, 0.578, 0.165, 0.246, 0.7
 cochrane_from_rmeta
 ```
 
-
+# Making the label table
 ```{r}
 tabletext <- cbind(c("", "Study", "Auckland", "Block", "Doran", "Gamsu", "Morrison", "Papageorgiou", "Tauesch", NA, "Summary"),
                    c("Deaths", "(steroid)", "36", "1", "4", "14", "3", "1", "8", NA, NA),
@@ -50,6 +50,7 @@ tabletext <- cbind(c("", "Study", "Auckland", "Block", "Doran", "Gamsu", "Morris
 tabletext
 ```
 
+# A basic forest plot
 ```{r}
 
 cochrane_from_rmeta %>% 
@@ -63,6 +64,7 @@ cochrane_from_rmeta %>%
 ```
 
 
+# Using a single table for plotting
 ```{r}
 # Cochrane data from the 'rmeta'-package
 base_data <- tibble(mean  = c(0.578, 0.165, 0.246, 0.700, 0.348, 0.139, 1.017), 
@@ -96,6 +98,8 @@ cochrane_output_df <- bind_rows(header,
 cochrane_output_df
 
 ```
+
+# Another basic forest plot
 ```{r}
 cochrane_output_df %>% 
   forestplot(labeltext = c(study, deaths_steroid, deaths_placebo, OR), 
@@ -104,12 +108,13 @@ cochrane_output_df %>%
              xlog = TRUE, 
              col = fpColors(box = "royalblue",
                             line = "darkblue",
-                            summary = "royalblue"))
+                            summary = "royalblue")
+  )
 
 ```
 
 
-
+# Changing the color 
 ```{r}
 cochrane_output_df %>% 
   forestplot(labeltext = c(study, deaths_steroid, deaths_placebo, OR), 
@@ -123,8 +128,8 @@ cochrane_output_df %>%
                             summary = "royalblue",
                             hrz_lines = "#444444"))
 ```
-# Using Expression 
 
+# Using Expression 
 ```{r}
 data(dfHRQoL)
 dfHRQoL <- dfHRQoL %>% mutate(est = sprintf("%.2f", mean), .after = labeltext)
@@ -141,8 +146,8 @@ dfHRQoL %>%
              col = clrs,                     #Set the colors for all the elements.
              xlab = "EQ-5D index")
 ```
-# Altering Fonts 
 
+# Altering Fonts 
 ```{r}
 # You can set directly the font to desired value, the next three lines are just for handling MacOs on CRAN
 font <- "mono"
@@ -157,7 +162,6 @@ dfHRQoL %>%
              xlab = "EQ-5D index")
 ```
 # Condidence Intervals 
-
 Clipping the interval is convenient for uncertain estimates in order to retain the resolution for those of more interest. The clipping simply adds an arrow to the confidence interval, see the bottom estimate below:
 
 ```{r}
@@ -170,8 +174,8 @@ dfHRQoL %>%
              xlab = "EQ-5D index")
 
 ```
-# Custom box size
 
+# Custom box size
 ```{r}
 dfHRQoL %>% 
   filter(group == "Sweden") %>% 
@@ -181,8 +185,8 @@ dfHRQoL %>%
              col = clrs,
              xlab = "EQ-5D index")
 ```
-# Multiple confidence bands
 
+# Multiple confidence bands
 ```{r}
 dfHRQoL %>%
   group_by(group) %>%
@@ -199,7 +203,6 @@ dfHRQoL %>%
 ```
 
 # Choosing line type
-
 ```{r}
 dfHRQoL %>%
   group_by(group) %>%
@@ -218,7 +221,6 @@ dfHRQoL %>%
 ```
 
 # Legends
-
 ```{r}
 dfHRQoL %>%
   group_by(group) %>%
@@ -230,6 +232,7 @@ dfHRQoL %>%
              col = fpColors(box = c("blue", "darkred")),
              xlab = "EQ-5D index")
 ```
+
 # Ticks on Axis 
 ```{r}
 
@@ -244,6 +247,7 @@ dfHRQoL %>%
              xlab = "EQ-5D index")
 
 ```
+
 -  Using object to define ticks and grids  
 ```{r}
 xticks <- seq(from = -.1, to = .05, by = 0.025)
@@ -260,6 +264,7 @@ dfHRQoL %>%
              xticks = xticks,
              xlab = "EQ-5D index")
 ```
+
 # Adding Grids 
 ```{r}
 dfHRQoL %>%
